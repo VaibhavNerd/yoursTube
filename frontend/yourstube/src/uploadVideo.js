@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function VideoUpload() {
   const [formData, setFormData] = useState({
@@ -16,7 +17,7 @@ function VideoUpload() {
       [e.target.name]: e.target.value
     });
   };
-
+ const navigate = useNavigate();
   const handleFileChange = (e) => {
     setFormData({
       ...formData,
@@ -33,9 +34,10 @@ function VideoUpload() {
         formDataToSend.append(key, formData[key]);
       }
 
-      await axios.post('http://localhost:8000/api/upload-video', formDataToSend);
+      await axios.post('http://localhost:8000/api/v1/videos/upload-video', formDataToSend);
 
       console.log('Video uploaded successfully');
+      navigate("/home")
       // Redirect or display success message
     } catch (error) {
       console.error('Video upload error:', error);

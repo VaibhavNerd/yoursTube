@@ -4,7 +4,8 @@ import { upload } from "../middlewares/multer.middleware.js"
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { uploadVideo, fetchVideos } from "../controllers/video.controller.js";
 
-router.route("/upload-video").post(verifyJWT,
+const router = Router()
+router.route("/upload-video").post(
     upload.fields([
         {
             name: "videoFile",

@@ -28,7 +28,7 @@ const uploadVideo = asyncHandler( async (req, res) => {
     //console.log("title: ", title);
     
 
-    const userId = req.user._id; 
+   // const userId = req.user._id; 
 
     if (
         [title, description , duration].some((field) => field?.trim() === "")
@@ -79,7 +79,7 @@ const uploadVideo = asyncHandler( async (req, res) => {
         duration,
         videoFile: video.url,
         thumbnail : thumbnail.url,
-        owner : userId,
+        //owner : userId,
     })
 
     const createdVideo = await Video.findById(videoentry._id)

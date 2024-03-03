@@ -32,8 +32,17 @@ function Login() {
         requestBody.username = username;
       }
 
-      await axios.post('http://localhost:8000/api/v1/users/login', requestBody);
+    const response =   await axios.post('http://localhost:8000/api/v1/users/login', requestBody,{
+      withCredntials: true,
+      credentials: 'include'
+});
+        // Extract cookies from response headers
+    // const cookies = response.headers['set-cookie'];
 
+    // // Save cookies in the browser's cookie store
+    // cookies.forEach(cookie => {
+    //   document.cookie = cookie;
+    // });
       console.log('Login successful');
       navigate('/home');
     } catch (error) {

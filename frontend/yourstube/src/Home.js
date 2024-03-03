@@ -1,77 +1,48 @@
-// // Home.js
-// import React from 'react';
-// import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
-
-// function Home() {
-//   const navigate = useNavigate();
-// //   const accessToken = document.cookie
-// //   .split('; ')
-// //   .find(row => row.startsWith('accessToken='))
-// //   ?.split('=')[1];
-
-//   const handleLogout = async () => {
-//     try {
-//       // Make API call to trigger logout
-//       await axios.post('http://localhost:8000/api/v1/users/logout',
-//     //   {
-//     //     withCredentials: true, // Include cookies for authentication
-//     //     headers: {
-//     //       Authorization: `Bearer ${accessToken}` // Example: JWT token
-//     //     }
-//     //   }
-//       );
-
-//       // Redirect to login page
-//       navigate('/login');
-//     } catch (error) {
-//       console.error('Logout error:', error);
-//       // Handle logout error
-//     }
-//   };
-
-//   return (
-//     <div className="container">
-//       <h1>Welcome to the Home Page</h1>
-//       <button onClick={handleLogout}>Logout</button>
-//     </div>
-//   );
-// }
-
-// export default Home;
-
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-function Home() {
+const Home = () => {
   const [videos, setVideos] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch video thumbnails and titles from backend API
-    axios.get('')
-      .then(response => {
-        setVideos(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching videos:', error);
-      });
+    fetchVideos(); 
+    const interval = setInterval(fetchVideos, 60000); // Fetch videos every minute
+    return () => clearInterval(interval);// Fetch videos when the component mounts
   }, []);
 
-  return (
-    <div>
-      <h1>Home</h1>
-      <Link to="/upload">Upload Video</Link> {/* Link to the upload video page */}
+  const fetchVideos = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/v1/videos/fetch-videos');
+      const resData = await response.json();
+      setVideos(resData.data.videoslist); // Update state with fetched videos
+    } catch (error) {
+      console.error('Error fetching videos:', error);
+    }
+  };
 
-      {/* Display video thumbnails and titles */}
-      {videos.map(video => (
-        <div key={video._id}>
-          <img src={video.thumbnail} alt={video.title} />
-          <h2>{video.title}</h2>
-        </div>
-      ))}
+  const handleUploadButtonClick = () => {
+    navigate('/upload');
+  };
+
+  return (
+    <div className="home-page">
+      <div className="floating-button" onClick={handleUploadButtonClick}>
+        +
+      </div>
+      <div className="video-list">
+        {videos && videos.map(video => (
+          <div key={video._id} className="video-item">
+            <Link to={`/video/${video._id}`}>
+              <img src={video.thumbnail} alt={video.title} />
+            </Link>
+            <h3>{video.title}</h3>
+          </div>
+        ))}
+      </div>
     </div>
   );
-}
+};
 
 export default Home;
