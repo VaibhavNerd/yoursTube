@@ -7,6 +7,7 @@ import './Reg.css';
 function Login() {
   const [formData, setFormData] = useState({
     email: '',
+    username: '',
     password: ''
   });
   const navigate = useNavigate();
@@ -22,25 +23,23 @@ function Login() {
     e.preventDefault();
 
     try {
-        const { email, username, password } = formData;
-        // Check which field has been provided and send that information in the request body
-        const requestBody = { password }; // Password is always required
-        if (email) {
-          requestBody.email = email;
-        } else if (username) {
-          requestBody.username = username;
-        }
-  
-        await axios.post('http://localhost:8000/api/v1/users/login', requestBody);
-  
-        console.log('Login successful');
-        navigate('/home');
-      } catch (error) {
-        console.error('Login error:', error);
+      const { email, username, password } = formData;
+      // Check which field has been provided and send that information in the request body
+      const requestBody = { password }; // Password is always required
+      if (email) {
+        requestBody.email = email;
+      } else if (username) {
+        requestBody.username = username;
       }
-    };
 
-   
+      await axios.post('http://localhost:8000/api/v1/users/login', requestBody);
+
+      console.log('Login successful');
+      navigate('/home');
+    } catch (error) {
+      console.error('Login error:', error);
+    }
+  };
 
   const handleRegisterClick = () => {
     navigate('/');
@@ -52,7 +51,11 @@ function Login() {
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="email">Email</label>
-          <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
+          <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="username">Username</label>
+          <input type="text" id="username" name="username" value={formData.username} onChange={handleChange} />
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
