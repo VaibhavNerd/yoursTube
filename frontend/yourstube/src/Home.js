@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './Home.css';
 
 const Home = () => {
   const [videos, setVideos] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchVideos(); 
+    fetchVideos();
     const interval = setInterval(fetchVideos, 60000); // Fetch videos every minute
-    return () => clearInterval(interval);// Fetch videos when the component mounts
+    return () => clearInterval(interval);
   }, []);
 
   const fetchVideos = async () => {
     try {
       const response = await fetch('http://localhost:8000/api/v1/videos/fetch-videos');
       const resData = await response.json();
-      setVideos(resData.data.videoslist); // Update state with fetched videos
+      setVideos(resData.data.videoslist);
     } catch (error) {
       console.error('Error fetching videos:', error);
     }
@@ -26,18 +27,25 @@ const Home = () => {
     navigate('/upload');
   };
 
+  const handleVideoClick = (video) => {
+    navigate(`/video/${video._id}`, { state: { video } }); // Pass the video object as state
+  };
+  
+
   return (
     <div className="home-page">
-      <div className="floating-button" onClick={handleUploadButtonClick}>
-        +
+      <div className="header">
+        <h1>YoursTube</h1>
+        <button onClick={handleUploadButtonClick}>Upload Video</button>
       </div>
       <div className="video-list">
-        {videos && videos.map(video => (
-          <div key={video._id} className="video-item">
-            <Link to={`/video/${video._id}`}>
-              <img src={video.thumbnail} alt={video.title} />
-            </Link>
-            <h3>{video.title}</h3>
+        {videos.map(video => (
+          <div key={video._id} className="video-item" onClick={() => handleVideoClick(video)}>
+            <img src={video.thumbnail} alt={video.title} />
+            <div className="video-details">
+              <h3>{video.title}</h3>
+              <p>{video.description}</p>
+            </div>
           </div>
         ))}
       </div>
