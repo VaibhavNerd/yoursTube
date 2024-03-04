@@ -1,4 +1,5 @@
 import { Router } from "express";
+import cookieParser from "cookie-parser";
 import {
     loginUser, 
     logoutUser, 

@@ -5,6 +5,7 @@ import {uploadOnCloudinary} from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken"
 import mongoose from "mongoose";
+import { options } from "../utils/jwtOption.js";
 
 // const registerUser = asyncHandler(async (req,res) =>{
 //     res.status(200).json({
@@ -141,11 +142,11 @@ const loginUser = asyncHandler(async (req, res) =>{
 
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
 
-    const options = {
-        httpOnly: false,
-        secure: true,
-        sameSite: 'none',
-    }
+    // const options = {
+    //     httpOnly: false,
+    //     secure: false,
+    //     //sameSite: 'none',
+    // }
 
     return res
     .status(200)
@@ -176,10 +177,10 @@ const logoutUser = asyncHandler(async(req, res) => {
         }
     )
 
-    const options = {
-        httpOnly: true,
-        secure: true
-    }
+    // const options = {
+    //     httpOnly: false,
+    //     secure: false,
+    // }
 
     return res
     .status(200)

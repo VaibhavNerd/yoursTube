@@ -1,12 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from '../../logo.svg';
+import '../../pages/css/App.css';
+
 
 import Reg from './Reg';
 import Login from './Login';
 import Home from './Home'; 
-import VideoUpload from './uploadVideo';
+import VideoUpload from '../../uploadVideo';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import VideoPlayer from './videoplayer';
+import VideoPlayer from '../../videoplayer';
 
 function App() {
   return (
