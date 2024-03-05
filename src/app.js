@@ -8,13 +8,23 @@ const app = express()
 //     origin: process.env.CORS_ORIGIN,
 //     credentials: true
 // }))
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}))
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    // Add other CORS headers as needed
+    next();
+  });
 
 app.use(express.json({limit: "16kb"}))
 app.use(express.urlencoded({extended: true, limit: "26kb"}))
 app.use(express.static("public"))
 app.use(cookieParser())
-app.use(cors({credentials: true, origin: 'http://localhost:3000'}))
 
+
+  
 
 //routes 
 import userRouter from './routes/user.routes.js'

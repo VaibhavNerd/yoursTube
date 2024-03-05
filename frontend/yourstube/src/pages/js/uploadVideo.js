@@ -34,7 +34,11 @@ function VideoUpload() {
         formDataToSend.append(key, formData[key]);
       }
 
-      await axios.post('http://localhost:8000/api/v1/videos/upload-video', formDataToSend);
+      await axios.post('http://localhost:8000/api/v1/videos/upload-video', formDataToSend,
+      {
+        withCredentials: true,
+        credentials: 'include'
+  });
 
       console.log('Video uploaded successfully');
       navigate("/home")

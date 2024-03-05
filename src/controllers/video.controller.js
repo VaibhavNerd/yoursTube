@@ -28,7 +28,7 @@ const uploadVideo = asyncHandler( async (req, res) => {
     //console.log("title: ", title);
     
 
-   // const userId = req.user._id; 
+    const userId = req.user._id; 
 
     if (
         [title, description , duration].some((field) => field?.trim() === "")
@@ -79,7 +79,7 @@ const uploadVideo = asyncHandler( async (req, res) => {
         duration,
         videoFile: video.url,
         thumbnail : thumbnail.url,
-        //owner : userId,
+        owner : userId,
     })
 
     const createdVideo = await Video.findById(videoentry._id)
@@ -100,7 +100,8 @@ const fetchVideos = asyncHandler(async (req, res) => {
       // Fetch  videos 
       
       const videoslist = await Video.find()
-      .sort({ createdAt: -1 }); 
+      .sort({ createdAt: -1 })
+      .populate('owner', 'username avatar'); 
 
       res.status(200).json(new ApiResponse(200, { videoslist }, "Videos fetched successfully"));
     } catch (error) {
@@ -109,8 +110,24 @@ const fetchVideos = asyncHandler(async (req, res) => {
     }
   });
 
+  const fetchUserVideos = asyncHandler(async (req, res) => {
+    try {
+      // Fetch  videos 
+      const owner = req.user._id; 
+      
+      const videoslist = await Video.find({ owner }) // Filter videos by owner ID
+      .sort({ createdAt: -1 }) // Sort videos by creation date, descending
+      .populate('owner', 'username avatar'); 
+
+      res.status(200).json(new ApiResponse(200, { videoslist }, "Videos fetched successfully"));
+    } catch (error) {
+      console.error('Error in fetching videos:', error);
+      res.status(501).json(new ApiResponse(501, {}, 'fetching videos failed'));
+    }
+  });
 
 export {
     uploadVideo,
     fetchVideos,
+    fetchUserVideos,
 }

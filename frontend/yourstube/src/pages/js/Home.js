@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../../pages/css/Home.css';
 
@@ -30,6 +30,10 @@ const Home = () => {
   const handleVideoClick = (video) => {
     navigate(`/video/${video._id}`, { state: { video } }); // Pass the video object as state
   };
+
+  const handlemyVideo = () =>{
+    navigate ('/my-videos');
+  }
 
   const handleLogout = async () => {
     try {
@@ -80,7 +84,8 @@ const Home = () => {
       <div className="header">
         <h1>YoursTube</h1>
         <button onClick={handleUploadButtonClick}>Upload Video</button>
-        <button onClick={handleLogout}>Logout</button> {/* Logout button */}
+        <button onClick={handleLogout}>Logout</button>
+        <button onClick={handlemyVideo}>My Videos</button>
       </div>
       <div className="video-list">
         {videos.map(video => (
@@ -89,12 +94,19 @@ const Home = () => {
             <div className="video-details">
               <h3>{video.title}</h3>
               <p>{video.description}</p>
+              <div className="owner-info">
+                <div className="avatar-container">
+                  <img src={video.owner.avatar} alt={`${video.owner.username}'s avatar`} />
+                </div>
+                <p>{video.owner.username}</p>
+              </div>
             </div>
           </div>
         ))}
       </div>
     </div>
   );
+
 };
 
 export default Home;

@@ -2,10 +2,10 @@ import { Router } from "express";
 
 import { upload } from "../middlewares/multer.middleware.js"
 import { verifyJWT } from "../middlewares/auth.middleware.js";
-import { uploadVideo, fetchVideos } from "../controllers/video.controller.js";
+import { uploadVideo, fetchVideos ,fetchUserVideos} from "../controllers/video.controller.js";
 
 const router = Router()
-router.route("/upload-video").post(
+router.route("/upload-video").post( verifyJWT,
     upload.fields([
         {
             name: "videoFile",
@@ -20,5 +20,6 @@ router.route("/upload-video").post(
 )
 
 router.route("/fetch-videos").get(fetchVideos)
+router.route("/fetch-myvideos").get(verifyJWT,fetchUserVideos)
 
 export default router

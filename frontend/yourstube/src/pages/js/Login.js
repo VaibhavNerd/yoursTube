@@ -1,7 +1,7 @@
 // Login.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import '../../pages/css/Reg.css';
 
 function Login() {
@@ -35,8 +35,9 @@ function Login() {
     const response =   await axios.post('http://localhost:8000/api/v1/users/login', requestBody,{
       withCredentials: true,
       credentials: 'include'
-});
-      // //  // Extract cookies from response headers
+}); 
+      //Not wokring
+      // //  // Extract cookies from response headers 
       //  const setCookieHeaders = response.headers['set-cookie'];
       // // console.log("ok",response.headers)
       //  if (setCookieHeaders) {
@@ -55,25 +56,34 @@ function Login() {
       //      });
       //    });
       //  }
- console.log(response);
-    // const responseJSON = JSON.parse(body);
-    //const resData = await response.json();
-    // const accessToken = response.data.accessToken;
-    // const refreshToken = response.data.refreshToken;
-    // document.cookie = `${accessToken}=${accessToken}; path=/;`;
-    // document.cookie = `${refreshToken}=${refreshToken}; path=/;`;
-    //  const { accessToken, refreshToken } = resData;
-     // const claims = Buffer.from(authToken.split(".")[1], "base64").toString();
-      // const responseHeaders = {
-      //   "Content-Type": "application/json",
-      //   "set-cookie": [
-      //     `accessToken=${accessToken}; Path=/; `,
-      //     `refreshToken=${refreshToken}; Path=/; `,
-      //   ],
-      // };
-     // response.writeHead(200, responseHeaders);
-      // res.end(claims);
       
+ console.log(response);
+
+ //use this when caaling login func with req and res handler then also some eror 
+//  const responseJSON = JSON.parse(body);
+//  const { accessToken, refreshToken } = responseJSON;
+//  // Decode the access token to extract claims
+//  const accessTokenClaims = Buffer.from(accessToken.split(".")[1], "base64").toString();
+//  // Decode the refresh token to extract claims
+//  const refreshTokenClaims = Buffer.from(refreshToken.split(".")[1], "base64").toString();
+//  const responseHeaders = {
+//    "Content-Type": "application/json",
+//    "set-cookie": [
+//      `accessToken=${accessToken}; Path=/; `,
+//      `refreshToken=${refreshToken}; Path=/; `,
+//    ],
+//  };
+//  response.writeHead(200, responseHeaders);
+//  res.end(accessTokenClaims);
+ 
+
+    // // This is not working cookie settig and logout even removing backend set cokie code
+    //   const accessToken = response.data.accessToken;
+    //   const refreshToken = response.data.refreshToken;
+    //   document.cookie = `${accessToken}=${accessToken}; path=/;`;
+    //   document.cookie = `${refreshToken}=${refreshToken}; path=/;`;
+    //   document.cookie = `{"checking"}={"hello"}; path=/;`;
+
       console.log('Login successful');
       navigate('/home');
     } catch (error) {

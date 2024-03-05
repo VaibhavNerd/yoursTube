@@ -1,5 +1,5 @@
 const options = {
-    httpOnly: true,
+    httpOnly: false,
     secure: false,
     //sameSite: 'none',
 }
